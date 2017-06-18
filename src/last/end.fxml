@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="last.newGame">
+   <center>
+      <Pane prefHeight="98.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="newGame" layoutX="14.0" layoutY="91.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="New game" />
+            <Button fx:id="restart" layoutX="104.0" layoutY="91.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Restart this" />
+            <Button fx:id="exit" layoutX="196.0" layoutY="91.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Exit" />
+            <Label layoutX="71.0" layoutY="27.0" prefHeight="17.0" prefWidth="159.0" text="You was trolled by my bomb" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
