@@ -1,20 +1,25 @@
 package last;
 
 import Datta.Board;
+import Datta.Hexagon;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+
+import static java.lang.StrictMath.sqrt;
+
 
 public class Main extends Application {
     public Pane root;
@@ -37,7 +42,11 @@ public class Main extends Application {
         Controll controll = loader.getController();
         mainController = controll;
         primaryStage.setTitle("Sapper");
+        primaryStage.getIcons().add(new Image("file:images.jpg"));
         primaryStage.setScene(new Scene(root));
+        root.setStyle("-fx-background-color: #A0F0FA;");
+        //primaryStage.setFullScreen(true);
+        //primaryStage.setHeight(side * 2 * n);
         primaryStage.show();
         startChose();
     }
@@ -115,20 +124,30 @@ public class Main extends Application {
     }
     public void startNew(int n, int bombCount) {
         board = new Board(n , bombCount);
-        double size = 640.0 / n;
+        double side = 640.0 / (sqrt(3) * n + 1);
         root.getChildren().clear();
         for (int i = 0; i < n ; i ++){
             for (int j = 0 ; j < n; j ++){
-                Rectangle r = new Rectangle(size, size);
+                SquareR pane = new SquareR(board.getBoard()[i][j]);
+                if (i % 2 != 0){
+                    pane.setLayoutX(side * 1.5 * i);
+                    pane.setLayoutY(sqrt(3) * side * j + side * sqrt(3) / 2 );
+                }
+                else{
+                    pane.setLayoutX(side * 1.5 * i);
+                    pane.setLayoutY(sqrt(3) * side * j );
+                }
+                Polygon hexagon = new Polygon(new Hexagon(side).getPoints());
+                hexagon.setFill(Color.DARKMAGENTA);
+                hexagon.setStroke(Color.BLACK);
+                hexagon.setStrokeWidth(1);
+                //Rectangle r = new Rectangle(size, size);
+                //r.setFill(Color.WHITE);
+                //r.setStroke(Color.BLACK);
+                //r.setStrokeWidth(1);
                 Text text = new Text(board.getBoard()[i][j].toString());
                 text.setVisible(false);
-                r.setFill(Color.WHITE);
-                r.setStroke(Color.BLACK);
-                r.setStrokeWidth(1);
-                SquareR pane = new SquareR(board.getBoard()[i][j]);
-                pane.setLayoutX(size * i);
-                pane.setLayoutY(size * j);
-                pane.getChildren().addAll(r, text);
+                pane.getChildren().addAll(hexagon, text);
                 root.getChildren().add(pane);
             }
         }
@@ -141,13 +160,15 @@ public class Main extends Application {
         root.getChildren().forEach(N -> {
             if (N instanceof SquareR) {
                 SquareR square = (SquareR)N;
-                ((Rectangle)square.getChildren().get(0)).setFill(Color.WHITE);
+                ((Polygon)square.getChildren().get(0)).setFill(Color.DARKMAGENTA);
                 square.getChildren().get(1).setVisible(false);
             }
         });
         mainController.restart();
     }
+
     public void end(){
         main.close();
     }
+
 }

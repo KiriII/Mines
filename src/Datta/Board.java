@@ -42,13 +42,20 @@ public class Board {
 
     public List<Square> getNaighbours(int i , int j){
         List<Square> list = new ArrayList<>();
-        for (int k = -1; k < 2; k++){
-            for (int l = -1; l < 2; l++){
-                if ((i + k >= 0) && (j + l >= 0) && (i + k < n) && (j + l < n)){
-                    list.add(board[i+k][j+l]);
-                }
-            }
+        if (j - 1 >= 0) list.add(board[i][j - 1]);
+        if (j + 1 < n) list.add(board[i][j + 1]);
+        if (i - 1 >= 0) list.add(board[i - 1][j]);
+        if (i + 1 < n) list.add(board[i + 1][j]);
+        if (i % 2 == 0) {
+            if ((i + 1 < n) && (j - 1 >= 0)) list.add(board[i + 1][j - 1]);
+            if ((i - 1 >= 0) && (j - 1 >= 0)) list.add(board[i - 1][j - 1]);
         }
+        else {
+            if ((i + 1 < n) && (j + 1 < n)) list.add(board[i + 1][j + 1]);
+            if ((i - 1 >= 0) && (j + 1 < n)) list.add(board[i - 1][j + 1]);
+        }
+        //if ((i + 1 < n) && (j + 1 < n)) list.add(board[i + 1][j + 1]);
+        //if ((i - 1 >= 0) && (j + 1 < n)) list.add(board[i - 1][j + 1]);
         return list;
     }
 
@@ -105,7 +112,8 @@ public class Board {
     public boolean isComplited(){
         for (int i = 0; i < n; i ++){
             for (int j = 0; j < n; j++){
-                if ((!board[i][j].isBomb() && !board[i][j].isOpen()) || (board[i][j].isBomb() && board[i][j].isOpen())) return false;
+                if ((!board[i][j].isBomb() && !board[i][j].isOpen()) || (board[i][j].isBomb() && board[i][j].isOpen()))
+                    return false;
             }
         }
         return true;

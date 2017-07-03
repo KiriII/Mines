@@ -30,8 +30,7 @@ public class Square {
     }
 
     public void marking(){
-        if (!isOpen)
-            isMarked = !isMarked;
+        isMarked = !isMarked;
     }
 
     public boolean isBomb(){

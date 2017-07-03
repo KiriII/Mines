@@ -6,7 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Polygon;
 
 import java.util.ArrayDeque;
 
@@ -24,6 +24,7 @@ public class Controll {
 
     }
     private EventHandler rectangle = new EventHandler<MouseEvent>() {
+        int clickedCount = 0;
         @Override
         public void handle(MouseEvent event) {
             if (event.isPrimaryButtonDown()) {
@@ -43,14 +44,18 @@ public class Controll {
                     }
                 }
                 if (board.isComplited()) main.win();
+                clickedCount++;
             }
             if (event.isSecondaryButtonDown()) {
+                if (clickedCount != 0) clickedCount++;
                 SquareR clickedSquare = (SquareR) event.getSource();
-                board.getBoard()[clickedSquare.getSquare().getX()][clickedSquare.getSquare().getY()].marking();
-                if (clickedSquare.getSquare().isMarked())
-                    ((Rectangle)clickedSquare.getChildren().get(0)).setFill(Color.valueOf("#fbb"));
-                else
-                    ((Rectangle)clickedSquare.getChildren().get(0)).setFill(Color.valueOf("#fff"));
+                if (!board.getBoard()[clickedSquare.getSquare().getX()][clickedSquare.getSquare().getY()].isOpen()) {
+                    board.getBoard()[clickedSquare.getSquare().getX()][clickedSquare.getSquare().getY()].marking();
+                    if (clickedSquare.getSquare().isMarked())
+                        ((Polygon) clickedSquare.getChildren().get(0)).setFill(Color.valueOf("#ba9"));
+                    else
+                        ((Polygon) clickedSquare.getChildren().get(0)).setFill(Color.DARKMAGENTA);
+                }
             }
             if (event.getClickCount() == 2){
                 SquareR clickedSquare = (SquareR) event.getSource();
@@ -69,6 +74,12 @@ public class Controll {
             if (N instanceof SquareR) {
                 SquareR square = (SquareR) N;
                 if (square.getSquare().isOpen()) {
+                    if (square.getSquare().isBomb()){
+                        ((Polygon) square.getChildren().get(0)).setFill(Color.RED);
+                    }
+                    else {
+                        ((Polygon) square.getChildren().get(0)).setFill(Color.MAGENTA);
+                    }
                     square.getChildren().get(1).setVisible(true);
                 }
             }
